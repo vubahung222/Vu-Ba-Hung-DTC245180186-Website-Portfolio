@@ -1,9 +1,9 @@
 {
   "annotations": { "list": [] },
-  "description": "Portfolio - Container, Nginx & MySQL Monitoring",
+  "description": "Portfolio - Container, Nginx, MySQL & Loki Log Monitoring | Đề 13",
   "editable": true,
   "fiscalYearStartMonth": 0,
-  "graphTooltip": 0,
+  "graphTooltip": 1,
   "id": null,
   "links": [],
   "panels": [
@@ -11,7 +11,7 @@
       "collapsed": false,
       "gridPos": { "h": 1, "w": 24, "x": 0, "y": 0 },
       "id": 100,
-      "title": "🐳 Container Metrics",
+      "title": "🐳 Container Metrics (cAdvisor)",
       "type": "row"
     },
     {
@@ -19,21 +19,22 @@
       "fieldConfig": {
         "defaults": {
           "color": { "mode": "palette-classic" },
-          "custom": { "lineWidth": 2, "fillOpacity": 10 },
-          "unit": "percent"
+          "custom": { "lineWidth": 2, "fillOpacity": 10, "spanNulls": true },
+          "unit": "percent",
+          "min": 0
         }
       },
       "gridPos": { "h": 8, "w": 12, "x": 0, "y": 1 },
       "id": 1,
-      "options": { "tooltip": { "mode": "multi" } },
+      "options": { "tooltip": { "mode": "multi" }, "legend": { "displayMode": "list", "placement": "bottom" } },
       "targets": [
         {
-          "expr": "(sum(rate(container_cpu_usage_seconds_total{name=~\"portfolio_.+\",name!=\"\"}[2m])) by (name) * 100) or (sum(rate(container_cpu_usage_seconds_total{id=~\"/docker.*|/\"}[2m])) by (id) * 100)",
-          "legendFormat": "{{name}}{{id}}",
+          "expr": "sum(rate(container_cpu_usage_seconds_total{name=~\"portfolio_.+\",name!=\"\"}[2m])) by (name) * 100",
+          "legendFormat": "{{name}}",
           "refId": "A"
         }
       ],
-      "title": "CPU Usage % by Container",
+      "title": "CPU Usage (%) - by Container",
       "type": "timeseries"
     },
     {
@@ -41,58 +42,83 @@
       "fieldConfig": {
         "defaults": {
           "color": { "mode": "palette-classic" },
-          "custom": { "lineWidth": 2, "fillOpacity": 10 },
-          "unit": "bytes"
+          "custom": { "lineWidth": 2, "fillOpacity": 10, "spanNulls": true },
+          "unit": "bytes",
+          "min": 0
         }
       },
       "gridPos": { "h": 8, "w": 12, "x": 12, "y": 1 },
       "id": 2,
+      "options": { "tooltip": { "mode": "multi" }, "legend": { "displayMode": "list", "placement": "bottom" } },
       "targets": [
         {
-          "expr": "container_memory_usage_bytes{name=~\"portfolio_.+\",name!=\"\"} or container_memory_usage_bytes{id=~\"/docker.*|/\"}",
-          "legendFormat": "{{name}}{{id}}",
+          "expr": "container_memory_usage_bytes{name=~\"portfolio_.+\",name!=\"\"}",
+          "legendFormat": "{{name}}",
           "refId": "A"
         }
       ],
-      "title": "Memory Usage by Container",
+      "title": "Memory Usage - by Container",
       "type": "timeseries"
     },
     {
       "datasource": { "type": "prometheus", "uid": "prometheus" },
       "fieldConfig": {
-        "defaults": { "unit": "Bps", "color": { "mode": "palette-classic" }, "custom": { "lineWidth": 2 } }
+        "defaults": {
+          "unit": "Bps",
+          "color": { "mode": "palette-classic" },
+          "custom": { "lineWidth": 2, "spanNulls": true }
+        }
       },
       "gridPos": { "h": 8, "w": 12, "x": 0, "y": 9 },
       "id": 3,
       "targets": [
         {
-          "expr": "sum(rate(container_network_receive_bytes_total{name=~\"portfolio_.+\"}[2m])) by (name) or sum(rate(container_network_receive_bytes_total[2m])) by (instance)",
-          "legendFormat": "RX {{name}}{{instance}}",
+          "expr": "sum(rate(container_network_receive_bytes_total{name=~\"portfolio_.+\"}[2m])) by (name)",
+          "legendFormat": "RX {{name}}",
           "refId": "A"
         },
         {
-          "expr": "sum(rate(container_network_transmit_bytes_total{name=~\"portfolio_.+\"}[2m])) by (name) or sum(rate(container_network_transmit_bytes_total[2m])) by (instance)",
-          "legendFormat": "TX {{name}}{{instance}}",
+          "expr": "sum(rate(container_network_transmit_bytes_total{name=~\"portfolio_.+\"}[2m])) by (name)",
+          "legendFormat": "TX {{name}}",
           "refId": "B"
         }
       ],
-      "title": "Network I/O by Container",
+      "title": "Network I/O - by Container",
       "type": "timeseries"
     },
     {
       "datasource": { "type": "prometheus", "uid": "prometheus" },
-      "fieldConfig": { "defaults": { "unit": "short", "color": { "mode": "thresholds" }, "thresholds": { "steps": [{ "color": "green", "value": null }] } } },
+      "fieldConfig": {
+        "defaults": {
+          "unit": "short",
+          "color": { "mode": "thresholds" },
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              { "color": "green", "value": null },
+              { "color": "yellow", "value": 8 },
+              { "color": "red", "value": 12 }
+            ]
+          },
+          "mappings": []
+        }
+      },
       "gridPos": { "h": 8, "w": 12, "x": 12, "y": 9 },
       "id": 4,
-      "options": { "reduceOptions": { "calcs": ["lastNotNull"] }, "orientation": "horizontal" },
+      "options": {
+        "reduceOptions": { "calcs": ["lastNotNull"] },
+        "orientation": "horizontal",
+        "displayMode": "lcd",
+        "colorMode": "background"
+      },
       "targets": [
         {
-          "expr": "count(container_last_seen{name=~\"portfolio_.+\",name!=\"\"}) or count(container_last_seen{id=~\"/docker.*|/\"})",
+          "expr": "count(container_last_seen{name=~\"portfolio_.+\",name!=\"\"})",
           "legendFormat": "Running Containers",
           "refId": "A"
         }
       ],
-      "title": "Running Containers",
+      "title": "🟢 Running Containers Count",
       "type": "stat"
     },
     {
@@ -104,13 +130,19 @@
     },
     {
       "datasource": { "type": "prometheus", "uid": "prometheus" },
-      "fieldConfig": { "defaults": { "unit": "short", "color": { "mode": "palette-classic" }, "custom": { "lineWidth": 2 } } },
+      "fieldConfig": {
+        "defaults": {
+          "unit": "short",
+          "color": { "mode": "palette-classic" },
+          "custom": { "lineWidth": 2, "spanNulls": true }
+        }
+      },
       "gridPos": { "h": 8, "w": 12, "x": 0, "y": 18 },
       "id": 5,
       "targets": [
         {
           "expr": "nginx_connections_active",
-          "legendFormat": "Active Connections",
+          "legendFormat": "Active",
           "refId": "A"
         },
         {
@@ -134,7 +166,13 @@
     },
     {
       "datasource": { "type": "prometheus", "uid": "prometheus" },
-      "fieldConfig": { "defaults": { "unit": "reqps", "color": { "mode": "palette-classic" }, "custom": { "lineWidth": 2 } } },
+      "fieldConfig": {
+        "defaults": {
+          "unit": "reqps",
+          "color": { "mode": "palette-classic" },
+          "custom": { "lineWidth": 2, "spanNulls": true }
+        }
+      },
       "gridPos": { "h": 8, "w": 12, "x": 12, "y": 18 },
       "id": 6,
       "targets": [
@@ -148,16 +186,93 @@
       "type": "timeseries"
     },
     {
+      "datasource": { "type": "prometheus", "uid": "prometheus" },
+      "fieldConfig": {
+        "defaults": {
+          "unit": "short",
+          "color": { "mode": "thresholds" },
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              { "color": "green", "value": null },
+              { "color": "yellow", "value": 50 },
+              { "color": "red", "value": 100 }
+            ]
+          }
+        }
+      },
+      "gridPos": { "h": 4, "w": 8, "x": 0, "y": 26 },
+      "id": 12,
+      "options": { "reduceOptions": { "calcs": ["lastNotNull"] }, "colorMode": "background" },
+      "targets": [
+        { "expr": "nginx_connections_active", "legendFormat": "Active Conn", "refId": "A" }
+      ],
+      "title": "Nginx Active Connections",
+      "type": "stat"
+    },
+    {
+      "datasource": { "type": "prometheus", "uid": "prometheus" },
+      "fieldConfig": {
+        "defaults": {
+          "unit": "short",
+          "color": { "mode": "thresholds" },
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [{ "color": "blue", "value": null }]
+          }
+        }
+      },
+      "gridPos": { "h": 4, "w": 8, "x": 8, "y": 26 },
+      "id": 13,
+      "options": { "reduceOptions": { "calcs": ["lastNotNull"] }, "colorMode": "background" },
+      "targets": [
+        { "expr": "nginx_http_requests_total", "legendFormat": "Total Requests", "refId": "A" }
+      ],
+      "title": "Nginx Total Requests",
+      "type": "stat"
+    },
+    {
+      "datasource": { "type": "prometheus", "uid": "prometheus" },
+      "fieldConfig": {
+        "defaults": {
+          "unit": "s",
+          "color": { "mode": "thresholds" },
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              { "color": "green", "value": null },
+              { "color": "yellow", "value": 0.5 },
+              { "color": "red", "value": 2 }
+            ]
+          }
+        }
+      },
+      "gridPos": { "h": 4, "w": 8, "x": 16, "y": 26 },
+      "id": 14,
+      "options": { "reduceOptions": { "calcs": ["lastNotNull"] }, "colorMode": "background" },
+      "targets": [
+        { "expr": "nginx_connections_accepted", "legendFormat": "Accepted", "refId": "A" }
+      ],
+      "title": "Nginx Accepted Connections",
+      "type": "stat"
+    },
+    {
       "collapsed": false,
-      "gridPos": { "h": 1, "w": 24, "x": 0, "y": 26 },
+      "gridPos": { "h": 1, "w": 24, "x": 0, "y": 30 },
       "id": 102,
       "title": "🗄️ MySQL Metrics",
       "type": "row"
     },
     {
       "datasource": { "type": "prometheus", "uid": "prometheus" },
-      "fieldConfig": { "defaults": { "unit": "short", "color": { "mode": "palette-classic" }, "custom": { "lineWidth": 2 } } },
-      "gridPos": { "h": 8, "w": 12, "x": 0, "y": 27 },
+      "fieldConfig": {
+        "defaults": {
+          "unit": "short",
+          "color": { "mode": "palette-classic" },
+          "custom": { "lineWidth": 2, "spanNulls": true }
+        }
+      },
+      "gridPos": { "h": 8, "w": 12, "x": 0, "y": 31 },
       "id": 7,
       "targets": [
         {
@@ -181,13 +296,19 @@
     },
     {
       "datasource": { "type": "prometheus", "uid": "prometheus" },
-      "fieldConfig": { "defaults": { "unit": "ops", "color": { "mode": "palette-classic" }, "custom": { "lineWidth": 2 } } },
-      "gridPos": { "h": 8, "w": 12, "x": 12, "y": 27 },
+      "fieldConfig": {
+        "defaults": {
+          "unit": "ops",
+          "color": { "mode": "palette-classic" },
+          "custom": { "lineWidth": 2, "spanNulls": true }
+        }
+      },
+      "gridPos": { "h": 8, "w": 12, "x": 12, "y": 31 },
       "id": 8,
       "targets": [
         {
           "expr": "rate(mysql_global_status_queries[2m])",
-          "legendFormat": "Queries/s",
+          "legendFormat": "Total Queries/s",
           "refId": "A"
         },
         {
@@ -199,6 +320,11 @@
           "expr": "rate(mysql_global_status_com_insert[2m])",
           "legendFormat": "INSERT/s",
           "refId": "C"
+        },
+        {
+          "expr": "rate(mysql_global_status_com_update[2m])",
+          "legendFormat": "UPDATE/s",
+          "refId": "D"
         }
       ],
       "title": "MySQL Query Rate",
@@ -206,22 +332,44 @@
     },
     {
       "datasource": { "type": "prometheus", "uid": "prometheus" },
-      "fieldConfig": { "defaults": { "unit": "s", "color": { "mode": "thresholds" } } },
-      "gridPos": { "h": 4, "w": 8, "x": 0, "y": 35 },
+      "fieldConfig": {
+        "defaults": {
+          "unit": "s",
+          "color": { "mode": "thresholds" },
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [{ "color": "green", "value": null }]
+          }
+        }
+      },
+      "gridPos": { "h": 4, "w": 6, "x": 0, "y": 39 },
       "id": 9,
-      "options": { "reduceOptions": { "calcs": ["lastNotNull"] } },
+      "options": { "reduceOptions": { "calcs": ["lastNotNull"] }, "colorMode": "background" },
       "targets": [
-        { "expr": "mysql_global_status_uptime", "legendFormat": "Uptime", "refId": "A" }
+        { "expr": "mysql_global_status_uptime", "legendFormat": "MySQL Uptime", "refId": "A" }
       ],
       "title": "MySQL Uptime",
       "type": "stat"
     },
     {
       "datasource": { "type": "prometheus", "uid": "prometheus" },
-      "fieldConfig": { "defaults": { "unit": "short", "color": { "mode": "thresholds" }, "thresholds": { "steps": [{ "color": "green", "value": null }, { "color": "yellow", "value": 80 }, { "color": "red", "value": 100 }] } } },
-      "gridPos": { "h": 4, "w": 8, "x": 8, "y": 35 },
+      "fieldConfig": {
+        "defaults": {
+          "unit": "short",
+          "color": { "mode": "thresholds" },
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              { "color": "green", "value": null },
+              { "color": "yellow", "value": 80 },
+              { "color": "red", "value": 100 }
+            ]
+          }
+        }
+      },
+      "gridPos": { "h": 4, "w": 6, "x": 6, "y": 39 },
       "id": 10,
-      "options": { "reduceOptions": { "calcs": ["lastNotNull"] } },
+      "options": { "reduceOptions": { "calcs": ["lastNotNull"] }, "colorMode": "background" },
       "targets": [
         { "expr": "mysql_global_status_threads_connected", "legendFormat": "Connected", "refId": "A" }
       ],
@@ -230,24 +378,231 @@
     },
     {
       "datasource": { "type": "prometheus", "uid": "prometheus" },
-      "fieldConfig": { "defaults": { "unit": "Bps", "color": { "mode": "palette-classic" }, "custom": { "lineWidth": 2 } } },
-      "gridPos": { "h": 4, "w": 8, "x": 16, "y": 35 },
+      "fieldConfig": {
+        "defaults": {
+          "unit": "Bps",
+          "color": { "mode": "palette-classic" },
+          "custom": { "lineWidth": 2, "spanNulls": true }
+        }
+      },
+      "gridPos": { "h": 4, "w": 12, "x": 12, "y": 39 },
       "id": 11,
       "targets": [
-        { "expr": "rate(mysql_global_status_bytes_received[2m])", "legendFormat": "Received", "refId": "A" },
-        { "expr": "rate(mysql_global_status_bytes_sent[2m])", "legendFormat": "Sent", "refId": "B" }
+        { "expr": "rate(mysql_global_status_bytes_received[2m])", "legendFormat": "Bytes Received/s", "refId": "A" },
+        { "expr": "rate(mysql_global_status_bytes_sent[2m])", "legendFormat": "Bytes Sent/s", "refId": "B" }
       ],
       "title": "MySQL Network I/O",
       "type": "timeseries"
+    },
+    {
+      "datasource": { "type": "prometheus", "uid": "prometheus" },
+      "fieldConfig": {
+        "defaults": {
+          "unit": "bytes",
+          "color": { "mode": "thresholds" },
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [{ "color": "green", "value": null }]
+          }
+        }
+      },
+      "gridPos": { "h": 4, "w": 6, "x": 0, "y": 43 },
+      "id": 15,
+      "options": { "reduceOptions": { "calcs": ["lastNotNull"] }, "colorMode": "background" },
+      "targets": [
+        { "expr": "mysql_global_status_innodb_buffer_pool_bytes_data", "legendFormat": "InnoDB Buffer", "refId": "A" }
+      ],
+      "title": "MySQL InnoDB Buffer",
+      "type": "stat"
+    },
+    {
+      "datasource": { "type": "prometheus", "uid": "prometheus" },
+      "fieldConfig": {
+        "defaults": {
+          "unit": "short",
+          "color": { "mode": "thresholds" },
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [{ "color": "green", "value": null }, { "color": "red", "value": 1 }]
+          }
+        }
+      },
+      "gridPos": { "h": 4, "w": 6, "x": 6, "y": 43 },
+      "id": 16,
+      "options": { "reduceOptions": { "calcs": ["lastNotNull"] }, "colorMode": "background" },
+      "targets": [
+        { "expr": "mysql_global_status_connection_errors_total", "legendFormat": "Conn Errors", "refId": "A" }
+      ],
+      "title": "MySQL Connection Errors",
+      "type": "stat"
+    },
+    {
+      "collapsed": false,
+      "gridPos": { "h": 1, "w": 24, "x": 0, "y": 47 },
+      "id": 103,
+      "title": "📋 Loki - Log Stream (Nginx)",
+      "type": "row"
+    },
+    {
+      "datasource": { "type": "loki", "uid": "loki" },
+      "gridPos": { "h": 10, "w": 24, "x": 0, "y": 48 },
+      "id": 20,
+      "options": {
+        "dedupStrategy": "none",
+        "enableLogDetails": true,
+        "prettifyLogMessage": false,
+        "showTime": true,
+        "showLabels": true,
+        "sortOrder": "Descending",
+        "wrapLogMessage": true
+      },
+      "targets": [
+        {
+          "expr": "{service=\"nginx\", log_type=\"access\"} | json | line_format \"{{.remote_addr}} [{{.status}}] {{.method}} {{.uri}} {{.request_time}}s\"",
+          "legendFormat": "Nginx Access",
+          "refId": "A"
+        }
+      ],
+      "title": "Nginx Access Logs - Real Time",
+      "type": "logs"
+    },
+    {
+      "datasource": { "type": "loki", "uid": "loki" },
+      "fieldConfig": {
+        "defaults": {
+          "color": { "mode": "palette-classic" },
+          "custom": { "lineWidth": 2, "fillOpacity": 15, "spanNulls": true }
+        }
+      },
+      "gridPos": { "h": 8, "w": 12, "x": 0, "y": 58 },
+      "id": 21,
+      "targets": [
+        {
+          "expr": "sum(count_over_time({service=\"nginx\", log_type=\"access\"}[1m])) by (status)",
+          "legendFormat": "HTTP {{status}}",
+          "refId": "A"
+        }
+      ],
+      "title": "HTTP Requests by Status Code (per minute)",
+      "type": "timeseries"
+    },
+    {
+      "datasource": { "type": "loki", "uid": "loki" },
+      "fieldConfig": {
+        "defaults": {
+          "color": { "mode": "palette-classic" },
+          "custom": { "lineWidth": 2, "fillOpacity": 15, "spanNulls": true }
+        }
+      },
+      "gridPos": { "h": 8, "w": 12, "x": 12, "y": 58 },
+      "id": 22,
+      "targets": [
+        {
+          "expr": "count_over_time({service=\"nginx\"} | json | status >= 400 [5m])",
+          "legendFormat": "HTTP 4xx/5xx Errors",
+          "refId": "A"
+        }
+      ],
+      "title": "HTTP Error Rate (4xx+5xx) per 5min",
+      "type": "timeseries"
+    },
+    {
+      "datasource": { "type": "loki", "uid": "loki" },
+      "gridPos": { "h": 8, "w": 24, "x": 0, "y": 66 },
+      "id": 23,
+      "options": {
+        "dedupStrategy": "none",
+        "enableLogDetails": true,
+        "prettifyLogMessage": false,
+        "showTime": true,
+        "sortOrder": "Descending",
+        "wrapLogMessage": true
+      },
+      "targets": [
+        {
+          "expr": "{container=\"portfolio_php\"} |= \"ERROR\"",
+          "legendFormat": "PHP Errors",
+          "refId": "A"
+        }
+      ],
+      "title": "PHP Container - ERROR Logs",
+      "type": "logs"
+    },
+    {
+      "collapsed": false,
+      "gridPos": { "h": 1, "w": 24, "x": 0, "y": 74 },
+      "id": 104,
+      "title": "📊 LogQL Queries - Mẫu Báo Cáo",
+      "type": "row"
+    },
+    {
+      "datasource": { "type": "loki", "uid": "loki" },
+      "gridPos": { "h": 8, "w": 12, "x": 0, "y": 75 },
+      "id": 24,
+      "options": {
+        "dedupStrategy": "none",
+        "enableLogDetails": true,
+        "showTime": true,
+        "sortOrder": "Descending"
+      },
+      "targets": [
+        {
+          "expr": "{service=\"nginx\"} | json | status >= 400 | line_format \"[{{.status}}] {{.method}} {{.uri}} from {{.remote_addr}}\"",
+          "legendFormat": "Nginx Errors (>=400)",
+          "refId": "A"
+        }
+      ],
+      "title": "LogQL #1: HTTP Errors (status >= 400)",
+      "type": "logs"
+    },
+    {
+      "datasource": { "type": "loki", "uid": "loki" },
+      "fieldConfig": {
+        "defaults": {
+          "color": { "mode": "palette-classic" },
+          "custom": { "lineWidth": 2 }
+        }
+      },
+      "gridPos": { "h": 8, "w": 12, "x": 12, "y": 75 },
+      "id": 25,
+      "targets": [
+        {
+          "expr": "count_over_time({service=\"nginx\"}[5m])",
+          "legendFormat": "Nginx requests/5min",
+          "refId": "A"
+        }
+      ],
+      "title": "LogQL #2: count_over_time Nginx (5m)",
+      "type": "timeseries"
+    },
+    {
+      "datasource": { "type": "loki", "uid": "loki" },
+      "gridPos": { "h": 8, "w": 24, "x": 0, "y": 83 },
+      "id": 26,
+      "options": {
+        "dedupStrategy": "none",
+        "enableLogDetails": true,
+        "showTime": true,
+        "sortOrder": "Descending"
+      },
+      "targets": [
+        {
+          "expr": "{container=\"portfolio_php\"} |= \"ERROR\" | line_format \"{{.stream}}: {{.line}}\"",
+          "legendFormat": "PHP Errors",
+          "refId": "A"
+        }
+      ],
+      "title": "LogQL #3: PHP Container ERROR filter",
+      "type": "logs"
     }
   ],
   "refresh": "30s",
   "schemaVersion": 38,
-  "tags": ["portfolio", "monitoring"],
+  "tags": ["portfolio", "monitoring", "de13", "dtc245180186"],
   "time": { "from": "now-1h", "to": "now" },
   "timepicker": {},
   "timezone": "Asia/Ho_Chi_Minh",
-  "title": "Portfolio - System Overview",
+  "title": "Portfolio - System Overview (Đề 13)",
   "uid": "portfolio-overview",
-  "version": 1
+  "version": 2
 }

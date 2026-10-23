@@ -1,8 +1,13 @@
-# Git ignore
+# =============================================
+# .gitignore - Portfolio Đề 13
+# =============================================
+
+# --- Môi trường (KHÔNG COMMIT!) ---
 .env
+.env.local
 *.env.local
 
-# Upload files
+# --- Upload files (dữ liệu người dùng) ---
 app/uploads/avatars/*.jpg
 app/uploads/avatars/*.jpeg
 app/uploads/avatars/*.png
@@ -10,40 +15,49 @@ app/uploads/avatars/*.gif
 app/uploads/avatars/*.webp
 !app/uploads/avatars/.gitkeep
 
-# SSL certs (private keys)
+# --- SSL certs ---
+# CHỈ ignore private key (.key) - bảo mật cao
+# GIỮ public cert (.crt) - Nginx cần để chạy được
 nginx/ssl/*.key
 nginx/ssl/*.pem
-nginx/ssl/*.crt
+# nginx/ssl/*.crt  ← KHÔNG ignore cert!
 
-# Docker volumes
+# --- Docker volumes (dữ liệu runtime) ---
 mysql-data/
 grafana-data/
 prometheus-data/
 loki-data/
 
-# Node modules (nếu có)
+# --- Node modules ---
 node_modules/
 
-# PHP cache
+# --- PHP cache ---
 app/src/cache/
+*.cache
 
-# OS files
+# --- OS files ---
 .DS_Store
 Thumbs.db
 desktop.ini
+*.lnk
 
-# IDE
+# --- IDE ---
 .vscode/
 .idea/
 *.swp
 *.swo
+*.orig
 
-# Backup
+# --- Backup files ---
 *.sql.bak
 *.sql.gz
 backups/
-*.sql
+# KHÔNG ignore *.sql (sẽ block mysql/init/*.sql scripts!)
 
-# Python cache
+# --- Python cache ---
 __pycache__/
 *.pyc
+*.pyo
+
+# --- Logs runtime ---
+*.log
