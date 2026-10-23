@@ -22,7 +22,7 @@ class Education
              VALUES (?,?,?,?,?,?,?,?)",
             [
                 $data['institution'], $data['degree'], $data['field_of_study'] ?? null,
-                (int)$data['start_year'], $data['end_year'] ? (int)$data['end_year'] : null,
+                (int)$data['start_year'], !empty($data['end_year']) ? (int)$data['end_year'] : null,
                 $data['description'] ?? null, $data['gpa'] ?? null, (int)($data['sort_order'] ?? 100),
             ]
         );
@@ -35,7 +35,7 @@ class Education
             "UPDATE `education` SET institution=?, degree=?, field_of_study=?, start_year=?, end_year=?, description=?, gpa=?, sort_order=? WHERE id=?",
             [
                 $data['institution'], $data['degree'], $data['field_of_study'] ?? null,
-                (int)$data['start_year'], $data['end_year'] ? (int)$data['end_year'] : null,
+                (int)$data['start_year'], !empty($data['end_year']) ? (int)$data['end_year'] : null,
                 $data['description'] ?? null, $data['gpa'] ?? null, (int)($data['sort_order'] ?? 100), $id,
             ]
         ) >= 0;

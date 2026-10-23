@@ -137,20 +137,20 @@ CREATE TABLE IF NOT EXISTS `sessions` (
 -- SEED DATA (Dữ liệu mẫu placeholder)
 -- =============================================
 
--- Hồ sơ cá nhân placeholder
+-- Hồ sơ cá nhân Vũ Bá Hùng
 INSERT INTO `profile` (
     `full_name`, `title`, `bio_short`, `bio_full`,
     `email`, `phone`, `location`,
     `github_url`, `linkedin_url`, `facebook_url`
 ) VALUES (
-    '[HỌ TÊN]',
-    'Sinh viên Công nghệ Thông tin',
-    'Xin chào! Tôi là sinh viên đam mê lập trình và công nghệ. Tôi thích xây dựng các ứng dụng web hữu ích và học hỏi các công nghệ mới mỗi ngày.',
-    'Tôi là sinh viên Công nghệ Thông tin với niềm đam mê mãnh liệt với lập trình web và DevOps. Trong suốt quá trình học tập, tôi đã tích lũy kinh nghiệm với nhiều công nghệ hiện đại từ phát triển frontend, backend đến triển khai hệ thống bằng Docker và giám sát bằng Prometheus/Grafana.\n\nTôi luôn hướng đến việc viết code sạch, có cấu trúc tốt và bảo mật. Ngoài việc học, tôi thích đóng góp cho các dự án mã nguồn mở và chia sẻ kiến thức với cộng đồng.',
-    'sinhvien@example.com',
-    '0900 000 000',
-    'Thành phố Hồ Chí Minh, Việt Nam',
-    '[GITHUB_URL]',
+    'Vũ Bá Hùng',
+    'Kỹ sư Phần mềm | KTPM K23C',
+    'Xin chào! Tôi là Vũ Bá Hùng, sinh viên ngành Kỹ thuật Phần mềm (KTPM K23C) tại Trường ĐH Công nghệ Thông tin & Truyền thông - Đại học Thái Nguyên. Đam mê lập trình web, DevOps và quản trị hệ thống.',
+    'Tôi là Vũ Bá Hùng, sinh viên Kỹ thuật Phần mềm khóa K23C tại Trường Đại học Công nghệ Thông tin và Truyền thông - Đại học Thái Nguyên (ICTU). Tôi có niềm đam mê sâu sắc với phát triển ứng dụng web hiện đại và triển khai, quản trị hệ thống bằng Docker, Nginx, Prometheus, Grafana và Loki.\n\nMục tiêu của tôi là xây dựng các giải pháp phần mềm chất lượng cao, bảo mật, tối ưu hiệu năng và dễ dàng mở rộng. Tôi luôn tích cực học hỏi các công nghệ mới và áp dụng thực tiễn vào các dự án.',
+    'vubahung222@gmail.com',
+    '0988 888 888',
+    'Thái Nguyên, Việt Nam',
+    'https://github.com/vubahung222/portfolio-DTC245180186',
     NULL,
     NULL
 );
@@ -195,12 +195,12 @@ INSERT INTO `projects` (`title`, `description`, `tech_stack`, `is_featured`, `so
 -- Học vấn mẫu
 INSERT INTO `education` (`institution`, `degree`, `field_of_study`, `start_year`, `end_year`, `description`) VALUES
 (
-    '[TRƯỜNG/KHOA]',
-    'Cử nhân',
-    'Công nghệ Thông tin',
-    2022,
+    'Trường Đại học Công nghệ Thông tin và Truyền thông - Đại học Thái Nguyên',
+    'Cử nhân / Kỹ sư',
+    'Kỹ thuật Phần mềm (KTPM K23C)',
+    2023,
     NULL,
-    'Đang theo học chương trình Công nghệ Thông tin. Các môn học chính: Lập trình Web, Cơ sở Dữ liệu, Mạng Máy tính, Triển khai và Quản trị Hệ thống.'
+    'Sinh viên KTPM K23C, MSSV: DTC245180186. Các môn học chính: Lập trình Web, Cơ sở Dữ liệu, Mạng Máy tính, Triển khai và Quản trị Hệ thống Phần mềm.'
 );
 
 -- Kinh nghiệm mẫu

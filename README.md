@@ -1,8 +1,8 @@
 # 🌐 Portfolio Website - Đề 13
 **Môn:** Triển khai và Quản trị Hệ thống Phần mềm  
-**Sinh viên:** [HỌ TÊN] — MSSV: [MSSV] — Lớp: [LỚP]  
-**Giảng viên:** [GIẢNG VIÊN]  
-**Trường/Khoa:** [TRƯỜNG/KHOA]
+**Sinh viên:** Vũ Bá Hùng — MSSV: DTC245180186 — Lớp: KTPM K23C  
+**Giảng viên:** Hoàng Văn Tâm  
+**Trường/Khoa:** Trường Đại học Công nghệ Thông tin và Truyền thông - Đại học Thái Nguyên
 
 ---
 
@@ -61,8 +61,8 @@ Monitoring Network:
 
 ### 1. Clone repository
 ```bash
-git clone https://github.com/[GITHUB_URL]/portfolio-[MSSV].git
-cd portfolio-[MSSV]
+git clone https://github.com/vubahung222/portfolio-DTC245180186.git
+cd portfolio-DTC245180186
 ```
 
 ### 2. Tạo file `.env`

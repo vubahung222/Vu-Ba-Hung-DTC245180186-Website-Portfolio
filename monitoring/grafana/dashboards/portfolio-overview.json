@@ -28,8 +28,8 @@
       "options": { "tooltip": { "mode": "multi" } },
       "targets": [
         {
-          "expr": "sum(rate(container_cpu_usage_seconds_total{name=~\"portfolio_.+\",name!=\"\"}[2m])) by (name) * 100",
-          "legendFormat": "{{name}}",
+          "expr": "(sum(rate(container_cpu_usage_seconds_total{name=~\"portfolio_.+\",name!=\"\"}[2m])) by (name) * 100) or (sum(rate(container_cpu_usage_seconds_total{id=~\"/docker.*|/\"}[2m])) by (id) * 100)",
+          "legendFormat": "{{name}}{{id}}",
           "refId": "A"
         }
       ],
@@ -49,8 +49,8 @@
       "id": 2,
       "targets": [
         {
-          "expr": "container_memory_usage_bytes{name=~\"portfolio_.+\",name!=\"\"}",
-          "legendFormat": "{{name}}",
+          "expr": "container_memory_usage_bytes{name=~\"portfolio_.+\",name!=\"\"} or container_memory_usage_bytes{id=~\"/docker.*|/\"}",
+          "legendFormat": "{{name}}{{id}}",
           "refId": "A"
         }
       ],
@@ -66,13 +66,13 @@
       "id": 3,
       "targets": [
         {
-          "expr": "sum(rate(container_network_receive_bytes_total{name=~\"portfolio_.+\"}[2m])) by (name)",
-          "legendFormat": "RX {{name}}",
+          "expr": "sum(rate(container_network_receive_bytes_total{name=~\"portfolio_.+\"}[2m])) by (name) or sum(rate(container_network_receive_bytes_total[2m])) by (instance)",
+          "legendFormat": "RX {{name}}{{instance}}",
           "refId": "A"
         },
         {
-          "expr": "sum(rate(container_network_transmit_bytes_total{name=~\"portfolio_.+\"}[2m])) by (name)",
-          "legendFormat": "TX {{name}}",
+          "expr": "sum(rate(container_network_transmit_bytes_total{name=~\"portfolio_.+\"}[2m])) by (name) or sum(rate(container_network_transmit_bytes_total[2m])) by (instance)",
+          "legendFormat": "TX {{name}}{{instance}}",
           "refId": "B"
         }
       ],
@@ -87,7 +87,7 @@
       "options": { "reduceOptions": { "calcs": ["lastNotNull"] }, "orientation": "horizontal" },
       "targets": [
         {
-          "expr": "count(container_last_seen{name=~\"portfolio_.+\",name!=\"\"})",
+          "expr": "count(container_last_seen{name=~\"portfolio_.+\",name!=\"\"}) or count(container_last_seen{id=~\"/docker.*|/\"})",
           "legendFormat": "Running Containers",
           "refId": "A"
         }

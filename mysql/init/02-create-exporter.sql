@@ -5,8 +5,9 @@
 -- =============================================
 
 -- Tạo user exporter với quyền tối thiểu
--- Mật khẩu 'exporter_password_change_me' phải trùng với file monitoring/mysql-exporter.cnf
-CREATE USER IF NOT EXISTS 'exporter'@'%' IDENTIFIED BY 'exporter_password_change_me';
+-- Mật khẩu khớp với monitoring/mysql-exporter.cnf
+CREATE USER IF NOT EXISTS 'exporter'@'%' IDENTIFIED BY 'ExpPass_Bahung@2025!';
+ALTER USER 'exporter'@'%' IDENTIFIED BY 'ExpPass_Bahung@2025!';
 
 -- Quyền cần thiết cho mysqld_exporter
 GRANT PROCESS, REPLICATION CLIENT, SELECT ON *.* TO 'exporter'@'%';
