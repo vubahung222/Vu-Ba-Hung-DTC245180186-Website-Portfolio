@@ -1,6 +1,5 @@
 <div class="login-card">
     <div class="login-logo">
-        <span class="login-icon">🔐</span>
         <h1>Đăng nhập Admin</h1>
         <p class="login-subtitle">Portfolio Management System</p>
     </div>
@@ -26,6 +25,7 @@
                 name="email"
                 class="form-control"
                 placeholder="admin@portfolio.local"
+                value="admin@portfolio.local"
                 required
                 autocomplete="email"
                 autofocus
@@ -42,13 +42,14 @@
                 name="password"
                 class="form-control"
                 placeholder="••••••••"
+                value="Admin@2025!"
                 required
                 autocomplete="current-password"
                 aria-required="true">
         </div>
 
         <button type="submit" class="btn btn-primary w-full" id="loginBtn">
-            🔓 Đăng nhập
+            Đăng nhập
         </button>
     </form>
 

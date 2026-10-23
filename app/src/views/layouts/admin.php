@@ -18,7 +18,6 @@
     <aside class="admin-sidebar" id="adminSidebar" aria-label="Menu quản trị">
         <div class="sidebar-header">
             <a href="/admin/dashboard" class="sidebar-brand">
-                <div class="sidebar-icon">⚙️</div>
                 <div>
                     <div class="sidebar-title">Admin Panel</div>
                     <div class="sidebar-subtitle text-xs text-muted"><?= e($user['name'] ?? 'Admin') ?></div>
@@ -30,20 +29,19 @@
             <?php $currentUri = \Core\Request::uri(); ?>
             <?php
             $navItems = [
-                ['/admin/dashboard', '📊', 'Dashboard'],
-                ['/admin/profile',   '👤', 'Hồ sơ'],
-                ['/admin/skills',    '⚡', 'Kỹ năng'],
-                ['/admin/projects',  '🚀', 'Dự án'],
-                ['/admin/education', '🎓', 'Học vấn'],
-                ['/admin/experiences','💼','Kinh nghiệm'],
-                ['/admin/messages',  '💬', 'Tin nhắn'],
-                ['/admin/password',  '🔒', 'Đổi mật khẩu'],
+                ['/admin/dashboard', 'Dashboard'],
+                ['/admin/profile',   'Hồ sơ'],
+                ['/admin/skills',    'Kỹ năng'],
+                ['/admin/projects',  'Dự án'],
+                ['/admin/education', 'Học vấn'],
+                ['/admin/experiences','Kinh nghiệm'],
+                ['/admin/messages',  'Tin nhắn'],
+                ['/admin/password',  'Đổi mật khẩu'],
             ];
-            foreach ($navItems as [$href, $icon, $label]):
+            foreach ($navItems as [$href, $label]):
                 $isActive = str_starts_with($currentUri, $href);
             ?>
             <a href="<?= $href ?>" class="sidebar-link <?= $isActive ? 'active' : '' ?>">
-                <span class="sidebar-link-icon" aria-hidden="true"><?= $icon ?></span>
                 <span><?= $label ?></span>
                 <?php if ($href === '/admin/messages' && ($unreadCount = \ContactMessage::countUnread()) > 0): ?>
                 <span class="sidebar-badge"><?= $unreadCount ?></span>
@@ -53,13 +51,13 @@
         </nav>
 
         <div class="sidebar-footer">
-            <a href="/" target="_blank" class="sidebar-link text-sm">
-                <span aria-hidden="true">🌐</span> Xem website
+            <a href="/" class="sidebar-link text-sm">
+                Xem website
             </a>
             <form action="/admin/logout" method="POST">
                 <?= csrf_field() ?>
                 <button type="submit" class="sidebar-link sidebar-logout w-full">
-                    <span aria-hidden="true">🚪</span> Đăng xuất
+                    Đăng xuất
                 </button>
             </form>
         </div>

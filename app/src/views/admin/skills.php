@@ -1,6 +1,6 @@
 <div class="page-header">
     <div>
-        <h1 class="page-title">⚡ Kỹ năng</h1>
+        <h1 class="page-title">Kỹ năng</h1>
         <p class="page-subtitle">Quản lý danh sách kỹ năng và công nghệ</p>
     </div>
 </div>
@@ -10,7 +10,7 @@
 
 <!-- Add Skill Form -->
 <div class="form-panel">
-    <div class="form-panel-title">➕ Thêm kỹ năng mới</div>
+    <div class="form-panel-title">Thêm kỹ năng mới</div>
     <form action="/admin/skills/create" method="POST" data-loading="true">
         <?= csrf_field() ?>
         <div class="form-row" style="grid-template-columns: 2fr 1fr 1fr auto; align-items: end;">
@@ -47,10 +47,10 @@
 <!-- Skills Table -->
 <div class="table-panel">
     <div class="table-panel-header">
-        <span class="table-panel-title">📋 Danh sách kỹ năng (<?= count($skills) ?>)</span>
+        <span class="table-panel-title">Danh sách kỹ năng (<?= count($skills) ?>)</span>
     </div>
     <?php if (empty($skills)): ?>
-    <div class="empty-state"><div class="empty-state-icon">⚡</div><p>Chưa có kỹ năng nào.</p></div>
+    <div class="empty-state"><p>Chưa có kỹ năng nào.</p></div>
     <?php else: ?>
     <div class="table-responsive">
     <table class="table">
@@ -84,13 +84,13 @@
                     <!-- Edit modal trigger -->
                     <button type="button" class="btn btn-ghost btn-sm"
                             onclick="openEditSkill(<?= htmlspecialchars(json_encode($skill), ENT_QUOTES) ?>)"
-                            aria-label="Chỉnh sửa <?= e($skill['name']) ?>">✏️</button>
+                            aria-label="Chỉnh sửa <?= e($skill['name']) ?>">Sửa</button>
                     <!-- Delete -->
                     <form action="/admin/skills/<?= $skill['id'] ?>/delete" method="POST" id="del-skill-<?= $skill['id'] ?>">
                         <?= csrf_field() ?>
                         <button type="button" class="btn btn-danger btn-sm"
                                 data-confirm="Xóa kỹ năng '<?= e($skill['name']) ?>'?"
-                                aria-label="Xóa <?= e($skill['name']) ?>">🗑️</button>
+                                aria-label="Xóa <?= e($skill['name']) ?>">Xóa</button>
                     </form>
                 </div>
             </td>
@@ -106,7 +106,7 @@
 <div class="modal-overlay" id="editSkillModal" role="dialog" aria-modal="true" aria-labelledby="editSkillTitle">
     <div class="modal">
         <button class="modal-close" onclick="document.getElementById('editSkillModal').classList.remove('active')" aria-label="Đóng">✕</button>
-        <h3 id="editSkillTitle" style="margin-bottom:var(--space-5)">✏️ Chỉnh sửa kỹ năng</h3>
+        <h3 id="editSkillTitle" style="margin-bottom:var(--space-5)">Chỉnh sửa kỹ năng</h3>
         <form id="editSkillForm" method="POST" data-loading="true">
             <?= csrf_field() ?>
             <div class="form-group">
@@ -134,7 +134,7 @@
             </div>
             <div style="display:flex;gap:var(--space-3);justify-content:flex-end;">
                 <button type="button" class="btn btn-ghost" onclick="document.getElementById('editSkillModal').classList.remove('active')">Hủy</button>
-                <button type="submit" class="btn btn-primary">💾 Lưu</button>
+                <button type="submit" class="btn btn-primary">Lưu</button>
             </div>
         </form>
     </div>
@@ -143,7 +143,7 @@
 <!-- Confirm delete modal -->
 <div class="modal-overlay" id="confirmModal" role="dialog" aria-modal="true" aria-labelledby="confirmTitle">
     <div class="modal confirm-modal">
-        <h3 id="confirmTitle">⚠️ Xác nhận xóa</h3>
+        <h3 id="confirmTitle">Xác nhận xóa</h3>
         <p id="confirmMessage" class="text-muted mt-4"></p>
         <div class="confirm-actions">
             <button class="btn btn-ghost" id="confirmNo">Hủy</button>

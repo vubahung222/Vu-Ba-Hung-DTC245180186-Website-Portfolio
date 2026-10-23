@@ -32,6 +32,12 @@
                 <li><a href="/#projects" class="nav-link">Dự án</a></li>
                 <li><a href="/#timeline" class="nav-link">Học vấn</a></li>
                 <li><a href="/lien-he" class="nav-link">Liên hệ</a></li>
+                <?php if (\Core\Auth::check()): ?>
+                <li><a href="/admin/dashboard" class="nav-link">Quản trị</a></li>
+                <li><a href="/admin/logout" class="nav-link">Đăng xuất</a></li>
+                <?php else: ?>
+                <li><a href="/admin/login" class="nav-link">Đăng nhập</a></li>
+                <?php endif; ?>
             </ul>
         </nav>
     </div>
@@ -67,7 +73,7 @@
         <p class="footer-copy">
             &copy; <?= date('Y') ?> <?= e($profile['full_name'] ?? '[HỌ TÊN]') ?>.
             Được xây dựng bằng PHP, MySQL, Docker &amp; Nginx.
-            &bull; <a href="/admin/login" class="text-muted" style="text-decoration:none;" title="Đăng nhập quản trị viên">🔐 Quản trị</a>
+            &bull; <a href="/admin/login" class="text-muted" style="text-decoration:none;">Quản trị</a>
         </p>
     </div>
 </footer>

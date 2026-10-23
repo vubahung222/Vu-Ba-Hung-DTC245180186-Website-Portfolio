@@ -1,6 +1,6 @@
 <div class="page-header">
     <div>
-        <h1 class="page-title">🔒 Đổi mật khẩu</h1>
+        <h1 class="page-title">Đổi mật khẩu</h1>
         <p class="page-subtitle">Cập nhật mật khẩu đăng nhập admin</p>
     </div>
 </div>
@@ -12,7 +12,7 @@
     <?= csrf_field() ?>
 
     <div class="form-panel">
-        <div class="form-panel-title">🔑 Mật khẩu</div>
+        <div class="form-panel-title">Mật khẩu</div>
 
         <div class="form-group">
             <label for="current_password" class="form-label">Mật khẩu hiện tại <span class="required">*</span></label>
@@ -38,7 +38,7 @@
 
         <div style="display:flex;gap:var(--space-3);">
             <a href="/admin/dashboard" class="btn btn-ghost">Hủy</a>
-            <button type="submit" class="btn btn-primary">🔐 Đổi mật khẩu</button>
+            <button type="submit" class="btn btn-primary">Đổi mật khẩu</button>
         </div>
     </div>
 </form>

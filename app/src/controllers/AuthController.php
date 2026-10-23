@@ -41,7 +41,9 @@ class AuthController
 
     public function logout(array $params = []): void
     {
-        Csrf::validateOrFail();
+        if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['_csrf_token'])) {
+            Csrf::validateOrFail();
+        }
         Auth::logout();
     }
 }

@@ -1,6 +1,6 @@
 <div class="page-header">
     <div>
-        <h1 class="page-title">🎓 Học vấn</h1>
+        <h1 class="page-title">Học vấn</h1>
         <p class="page-subtitle">Quản lý thông tin học vấn</p>
     </div>
 </div>
@@ -10,7 +10,7 @@
 
 <!-- Add Form -->
 <div class="form-panel">
-    <div class="form-panel-title">➕ Thêm mục học vấn</div>
+    <div class="form-panel-title">Thêm mục học vấn</div>
     <form action="/admin/education/create" method="POST" data-loading="true">
         <?= csrf_field() ?>
         <div class="form-row">
@@ -49,15 +49,15 @@
             <label for="edu_desc" class="form-label">Mô tả</label>
             <textarea id="edu_desc" name="description" class="form-control" rows="3" placeholder="Mô tả khóa học, thành tích..."></textarea>
         </div>
-        <button type="submit" class="btn btn-primary">➕ Thêm</button>
+        <button type="submit" class="btn btn-primary">Thêm</button>
     </form>
 </div>
 
 <!-- Table -->
 <div class="table-panel">
-    <div class="table-panel-header"><span class="table-panel-title">📋 Danh sách học vấn (<?= count($education) ?>)</span></div>
+    <div class="table-panel-header"><span class="table-panel-title">Danh sách học vấn (<?= count($education) ?>)</span></div>
     <?php if (empty($education)): ?>
-    <div class="empty-state"><div class="empty-state-icon">🎓</div><p>Chưa có thông tin học vấn.</p></div>
+    <div class="empty-state"><p>Chưa có thông tin học vấn.</p></div>
     <?php else: ?>
     <div class="table-responsive">
     <table class="table">
@@ -74,11 +74,11 @@
             <td>
                 <div style="display:flex;gap:var(--space-2);">
                     <button type="button" class="btn btn-ghost btn-sm"
-                            onclick="openEditEdu(<?= htmlspecialchars(json_encode($edu, JSON_UNESCAPED_UNICODE), ENT_QUOTES) ?>)">✏️</button>
+                            onclick="openEditEdu(<?= htmlspecialchars(json_encode($edu, JSON_UNESCAPED_UNICODE), ENT_QUOTES) ?>)">Sửa</button>
                     <form action="/admin/education/<?= $edu['id'] ?>/delete" method="POST">
                         <?= csrf_field() ?>
                         <button type="button" class="btn btn-danger btn-sm"
-                                data-confirm="Xóa mục học vấn '<?= e($edu['institution']) ?>'?">🗑️</button>
+                                data-confirm="Xóa mục học vấn '<?= e($edu['institution']) ?>'?">Xóa</button>
                     </form>
                 </div>
             </td>
@@ -94,7 +94,7 @@
 <div class="modal-overlay" id="editEduModal" role="dialog" aria-modal="true" aria-labelledby="editEduTitle">
     <div class="modal" style="max-width:600px">
         <button class="modal-close" onclick="document.getElementById('editEduModal').classList.remove('active')" aria-label="Đóng">✕</button>
-        <h3 id="editEduTitle" style="margin-bottom:var(--space-5)">✏️ Chỉnh sửa học vấn</h3>
+        <h3 id="editEduTitle" style="margin-bottom:var(--space-5)">Chỉnh sửa học vấn</h3>
         <form id="editEduForm" method="POST" data-loading="true">
             <?= csrf_field() ?>
             <div class="form-row">
@@ -112,7 +112,7 @@
             <div class="form-group"><label class="form-label">Mô tả</label><textarea id="ee_desc" name="description" class="form-control" rows="3"></textarea></div>
             <div style="display:flex;gap:var(--space-3);justify-content:flex-end;">
                 <button type="button" class="btn btn-ghost" onclick="document.getElementById('editEduModal').classList.remove('active')">Hủy</button>
-                <button type="submit" class="btn btn-primary">💾 Lưu</button>
+                <button type="submit" class="btn btn-primary">Lưu</button>
             </div>
         </form>
     </div>
@@ -121,7 +121,7 @@
 <!-- Confirm Modal -->
 <div class="modal-overlay" id="confirmModal" role="dialog" aria-modal="true">
     <div class="modal confirm-modal">
-        <h3>⚠️ Xác nhận xóa</h3>
+        <h3>Xác nhận xóa</h3>
         <p id="confirmMessage" class="text-muted mt-4"></p>
         <div class="confirm-actions">
             <button class="btn btn-ghost" id="confirmNo">Hủy</button>

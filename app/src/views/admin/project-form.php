@@ -4,7 +4,7 @@ $pageTitle = $isEdit ? 'Chỉnh sửa dự án' : 'Thêm dự án mới';
 ?>
 <div class="page-header">
     <div>
-        <h1 class="page-title">🚀 <?= $pageTitle ?></h1>
+        <h1 class="page-title"><?= $pageTitle ?></h1>
     </div>
     <a href="/admin/projects" class="btn btn-ghost">← Quay lại</a>
 </div>
@@ -13,7 +13,7 @@ $pageTitle = $isEdit ? 'Chỉnh sửa dự án' : 'Thêm dự án mới';
     <?= csrf_field() ?>
 
     <div class="form-panel">
-        <div class="form-panel-title">📝 Thông tin dự án</div>
+        <div class="form-panel-title">Thông tin dự án</div>
 
         <div class="form-group">
             <label for="title" class="form-label">Tiêu đề <span class="required">*</span></label>
@@ -69,7 +69,7 @@ $pageTitle = $isEdit ? 'Chỉnh sửa dự án' : 'Thêm dự án mới';
     </div>
 
     <div class="form-panel">
-        <div class="form-panel-title">🖼️ Ảnh minh họa</div>
+        <div class="form-panel-title">Ảnh minh họa</div>
         <?php if (!empty($project['image'])): ?>
         <div style="margin-bottom:var(--space-4);">
             <img src="<?= uploads_url($project['image']) ?>" alt="Ảnh hiện tại"
@@ -86,7 +86,7 @@ $pageTitle = $isEdit ? 'Chỉnh sửa dự án' : 'Thêm dự án mới';
     <div style="display:flex;gap:var(--space-3);justify-content:flex-end;">
         <a href="/admin/projects" class="btn btn-ghost">Hủy</a>
         <button type="submit" class="btn btn-primary">
-            <?= $isEdit ? '💾 Cập nhật dự án' : '➕ Thêm dự án' ?>
+            <?= $isEdit ? 'Cập nhật dự án' : 'Thêm dự án' ?>
         </button>
     </div>
 </form>

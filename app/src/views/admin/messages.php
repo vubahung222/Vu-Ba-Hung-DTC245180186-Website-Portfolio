@@ -1,6 +1,6 @@
 <div class="page-header">
     <div>
-        <h1 class="page-title">💬 Tin nhắn liên hệ</h1>
+        <h1 class="page-title">Tin nhắn liên hệ</h1>
         <p class="page-subtitle">Tin nhắn từ form liên hệ trên website</p>
     </div>
 </div>
@@ -11,7 +11,7 @@
 <div class="table-panel">
     <div class="table-panel-header">
         <span class="table-panel-title">
-            📋 Tin nhắn (<?= count($messages) ?>)
+            Tin nhắn (<?= count($messages) ?>)
             <?php $unread = array_filter($messages, fn($m) => !$m['is_read']); ?>
             <?php if (count($unread) > 0): ?>
             <span class="sidebar-badge"><?= count($unread) ?> chưa đọc</span>
@@ -20,7 +20,7 @@
     </div>
 
     <?php if (empty($messages)): ?>
-    <div class="empty-state"><div class="empty-state-icon">💬</div><p>Chưa có tin nhắn nào.</p></div>
+    <div class="empty-state"><p>Chưa có tin nhắn nào.</p></div>
     <?php else: ?>
     <div class="table-responsive">
     <table class="table">
@@ -39,9 +39,9 @@
             <td class="text-sm text-muted"><?= date('d/m/Y H:i', strtotime($msg['created_at'])) ?></td>
             <td>
                 <?php if ($msg['is_read']): ?>
-                <span class="badge badge-gray">✅ Đã đọc</span>
+                <span class="badge badge-gray">Đã đọc</span>
                 <?php else: ?>
-                <span class="badge badge-primary">🔵 Chưa đọc</span>
+                <span class="badge badge-primary">Chưa đọc</span>
                 <?php endif; ?>
             </td>
             <td>
@@ -53,12 +53,12 @@
                             data-subject="<?= e($msg['subject']) ?>"
                             data-message="<?= e($msg['message']) ?>"
                             data-date="<?= date('d/m/Y H:i', strtotime($msg['created_at'])) ?>">
-                        👁️ Xem
+                        Xem
                     </button>
                     <form action="/admin/messages/<?= $msg['id'] ?>/delete" method="POST">
                         <?= csrf_field() ?>
                         <button type="button" class="btn btn-danger btn-sm"
-                                data-confirm="Xóa tin nhắn từ '<?= e($msg['sender_name']) ?>'?">🗑️</button>
+                                data-confirm="Xóa tin nhắn từ '<?= e($msg['sender_name']) ?>'?">Xóa</button>
                     </form>
                 </div>
             </td>
@@ -74,7 +74,7 @@
 <div class="modal-overlay" id="msgModal" role="dialog" aria-modal="true" aria-labelledby="msgModalTitle">
     <div class="modal" style="max-width:560px">
         <button class="modal-close" id="msgModalClose" aria-label="Đóng">✕</button>
-        <h3 id="msgModalTitle" style="margin-bottom:var(--space-5)">💬 Nội dung tin nhắn</h3>
+        <h3 id="msgModalTitle" style="margin-bottom:var(--space-5)">Nội dung tin nhắn</h3>
         <div style="display:grid;grid-template-columns:auto 1fr;gap:var(--space-2) var(--space-4);margin-bottom:var(--space-5);font-size:.9rem;">
             <span class="text-muted font-bold">Người gửi:</span><span id="msgModal-name" class="font-bold"></span>
             <span class="text-muted font-bold">Email:</span><a id="msgModal-email" href="#" class="text-primary"></a>
@@ -86,7 +86,7 @@
             <button type="button" class="btn btn-ghost" id="msgModalClose2">Đóng</button>
             <form id="msgReadForm" method="POST">
                 <?= csrf_field() ?>
-                <button type="submit" class="btn btn-primary">✅ Đánh dấu đã đọc</button>
+                <button type="submit" class="btn btn-primary">Đánh dấu đã đọc</button>
             </form>
         </div>
     </div>
@@ -95,7 +95,7 @@
 <!-- Confirm modal -->
 <div class="modal-overlay" id="confirmModal" role="dialog" aria-modal="true">
     <div class="modal confirm-modal">
-        <h3>⚠️ Xác nhận xóa</h3>
+        <h3>Xác nhận xóa</h3>
         <p id="confirmMessage" class="text-muted mt-4"></p>
         <div class="confirm-actions">
             <button class="btn btn-ghost" id="confirmNo">Hủy</button>

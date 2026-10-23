@@ -16,6 +16,7 @@ $router->get('/health', [\PublicController::class, 'health']);
 // ── Auth routes ───────────────────────────────
 $router->get('/admin/login', [\AuthController::class, 'loginForm']);
 $router->post('/admin/login', [\AuthController::class, 'login']);
+$router->get('/admin/logout', [\AuthController::class, 'logout']);
 $router->post('/admin/logout', [\AuthController::class, 'logout']);
 
 // ── Admin routes (yêu cầu đăng nhập) ─────────

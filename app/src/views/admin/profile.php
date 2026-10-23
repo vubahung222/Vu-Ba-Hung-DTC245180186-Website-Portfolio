@@ -7,7 +7,7 @@ if (!empty($profile['full_name'])) {
 ?>
 <div class="page-header">
     <div>
-        <h1 class="page-title">👤 Cập nhật hồ sơ</h1>
+        <h1 class="page-title">Cập nhật hồ sơ</h1>
         <p class="page-subtitle">Thông tin hiển thị trên trang portfolio</p>
     </div>
 </div>
@@ -21,7 +21,7 @@ if (!empty($profile['full_name'])) {
 
 <!-- Avatar Upload -->
 <div class="form-panel">
-    <div class="form-panel-title">📷 Ảnh đại diện</div>
+    <div class="form-panel-title">Ảnh đại diện</div>
     <div class="avatar-upload-area">
         <?php if (!empty($profile['avatar'])): ?>
         <img src="<?= uploads_url($profile['avatar']) ?>" id="avatarPreview"
@@ -37,7 +37,7 @@ if (!empty($profile['full_name'])) {
                 <div style="display:flex; gap:var(--space-3); align-items:center; flex-wrap:wrap;">
                     <input type="file" id="avatarInput" name="avatar" accept="image/jpeg,image/png,image/gif,image/webp"
                            class="form-control" style="max-width:280px;" aria-label="Chọn ảnh đại diện">
-                    <button type="submit" class="btn btn-primary btn-sm">⬆️ Tải lên</button>
+                    <button type="submit" class="btn btn-primary btn-sm">Tải lên</button>
                 </div>
             </form>
         </div>
@@ -49,7 +49,7 @@ if (!empty($profile['full_name'])) {
     <?= csrf_field() ?>
 
     <div class="form-panel">
-        <div class="form-panel-title">📋 Thông tin cơ bản</div>
+        <div class="form-panel-title">Thông tin cơ bản</div>
         <div class="form-row">
             <div class="form-group">
                 <label for="full_name" class="form-label">Họ và tên <span class="required">*</span></label>
@@ -82,7 +82,7 @@ if (!empty($profile['full_name'])) {
     </div>
 
     <div class="form-panel">
-        <div class="form-panel-title">📞 Thông tin liên hệ</div>
+        <div class="form-panel-title">Thông tin liên hệ</div>
         <div class="form-row">
             <div class="form-group">
                 <label for="email" class="form-label">Email</label>
@@ -103,7 +103,7 @@ if (!empty($profile['full_name'])) {
     </div>
 
     <div class="form-panel">
-        <div class="form-panel-title">🔗 Mạng xã hội</div>
+        <div class="form-panel-title">Mạng xã hội</div>
         <div class="form-group">
             <label for="github_url" class="form-label">GitHub URL</label>
             <input type="url" id="github_url" name="github_url" class="form-control"
@@ -137,6 +137,6 @@ if (!empty($profile['full_name'])) {
 
     <div style="display:flex; gap:var(--space-3); justify-content:flex-end;">
         <a href="/admin/dashboard" class="btn btn-ghost">Hủy</a>
-        <button type="submit" class="btn btn-primary">💾 Lưu thay đổi</button>
+        <button type="submit" class="btn btn-primary">Lưu thay đổi</button>
     </div>
 </form>
