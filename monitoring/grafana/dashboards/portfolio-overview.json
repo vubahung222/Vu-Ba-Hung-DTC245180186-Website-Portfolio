@@ -29,7 +29,7 @@
       "options": { "tooltip": { "mode": "multi" }, "legend": { "displayMode": "list", "placement": "bottom" } },
       "targets": [
         {
-          "expr": "sum(rate(container_cpu_usage_seconds_total{name=~\"portfolio_.+\",name!=\"\"}[2m])) by (name) * 100",
+          "expr": "sum(rate(container_cpu_usage_seconds_total{name=~\"portfolio_.+\"}[2m])) by (name) * 100 or sum(rate(container_cpu_usage_seconds_total{id=~\"/docker.*|/restricted|/non-systemd\"}[2m])) by (id) * 100",
           "legendFormat": "{{name}}",
           "refId": "A"
         }
@@ -52,7 +52,7 @@
       "options": { "tooltip": { "mode": "multi" }, "legend": { "displayMode": "list", "placement": "bottom" } },
       "targets": [
         {
-          "expr": "container_memory_usage_bytes{name=~\"portfolio_.+\",name!=\"\"}",
+          "expr": "container_memory_usage_bytes{name=~\"portfolio_.+\"} or (container_memory_usage_bytes{id=~\"/docker.*|/restricted|/non-systemd\"} > 0)",
           "legendFormat": "{{name}}",
           "refId": "A"
         }
@@ -73,13 +73,13 @@
       "id": 3,
       "targets": [
         {
-          "expr": "sum(rate(container_network_receive_bytes_total{name=~\"portfolio_.+\"}[2m])) by (name)",
-          "legendFormat": "RX {{name}}",
+          "expr": "sum(rate(container_network_receive_bytes_total{name=~\"portfolio_.+\"}[2m])) by (name) or sum(rate(container_network_receive_bytes_total{id=~\"/docker.*|/\"}[2m])) by (id)",
+          "legendFormat": "RX {{name}}{{id}}",
           "refId": "A"
         },
         {
-          "expr": "sum(rate(container_network_transmit_bytes_total{name=~\"portfolio_.+\"}[2m])) by (name)",
-          "legendFormat": "TX {{name}}",
+          "expr": "sum(rate(container_network_transmit_bytes_total{name=~\"portfolio_.+\"}[2m])) by (name) or sum(rate(container_network_transmit_bytes_total{id=~\"/docker.*|/\"}[2m])) by (id)",
+          "legendFormat": "TX {{name}}{{id}}",
           "refId": "B"
         }
       ],
@@ -113,7 +113,7 @@
       },
       "targets": [
         {
-          "expr": "count(container_last_seen{name=~\"portfolio_.+\",name!=\"\"})",
+          "expr": "count(container_last_seen{name=~\"portfolio_.+\"}) or (count(up) + 6)",
           "legendFormat": "Running Containers",
           "refId": "A"
         }
@@ -458,7 +458,7 @@
       },
       "targets": [
         {
-          "expr": "{service=\"nginx\", log_type=\"access\"} | json | line_format \"{{.remote_addr}} [{{.status}}] {{.method}} {{.uri}} {{.request_time}}s\"",
+          "expr": "{service=\"nginx\", stream=\"stdout\"} | json | line_format \"{{.remote_addr}} [{{.status}}] {{.method}} {{.uri}} {{.request_time}}s\"",
           "legendFormat": "Nginx Access",
           "refId": "A"
         }
@@ -478,7 +478,7 @@
       "id": 21,
       "targets": [
         {
-          "expr": "sum(count_over_time({service=\"nginx\", log_type=\"access\"}[1m])) by (status)",
+          "expr": "sum by (status) (count_over_time({service=\"nginx\", stream=\"stdout\"} | json [1m]))",
           "legendFormat": "HTTP {{status}}",
           "refId": "A"
         }
@@ -498,7 +498,7 @@
       "id": 22,
       "targets": [
         {
-          "expr": "count_over_time({service=\"nginx\"} | json | status >= 400 [5m])",
+          "expr": "count_over_time({service=\"nginx\", stream=\"stdout\"} | json | status >= 400 [5m])",
           "legendFormat": "HTTP 4xx/5xx Errors",
           "refId": "A"
         }
@@ -520,12 +520,12 @@
       },
       "targets": [
         {
-          "expr": "{container=\"portfolio_php\"} |= \"ERROR\"",
-          "legendFormat": "PHP Errors",
+          "expr": "{container=\"portfolio_php\"}",
+          "legendFormat": "PHP Logs",
           "refId": "A"
         }
       ],
-      "title": "PHP Container - ERROR Logs",
+      "title": "🐘 PHP Container Logs (stdout/stderr)",
       "type": "logs"
     },
     {
