@@ -67,6 +67,7 @@
         <p class="footer-copy">
             &copy; <?= date('Y') ?> <?= e($profile['full_name'] ?? '[HỌ TÊN]') ?>.
             Được xây dựng bằng PHP, MySQL, Docker &amp; Nginx.
+            &bull; <a href="/admin/login" class="text-muted" style="text-decoration:none;" title="Đăng nhập quản trị viên">🔐 Quản trị</a>
         </p>
     </div>
 </footer>
