@@ -150,7 +150,7 @@ INSERT INTO `profile` (
     'vubahung222@gmail.com',
     '0988 888 888',
     'Thái Nguyên, Việt Nam',
-    'https://github.com/vubahung222/portfolio-DTC245180186',
+    'https://github.com/vubahung222/Vu-Ba-Hung-DTC245180186-Website-Portfolio',
     NULL,
     NULL
 );

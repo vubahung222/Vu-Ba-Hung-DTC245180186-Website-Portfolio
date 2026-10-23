@@ -1,4 +1,4 @@
-# 🌐 Portfolio Website - Đề 13
+# 🌐 Vũ Bá Hùng DTC245180186 Website Portfolio - Đề 13
 **Môn:** Triển khai và Quản trị Hệ thống Phần mềm  
 **Sinh viên:** Vũ Bá Hùng — MSSV: DTC245180186 — Lớp: KTPM K23C  
 **Giảng viên:** Hoàng Văn Tâm  
@@ -61,8 +61,8 @@ Monitoring Network:
 
 ### 1. Clone repository
 ```bash
-git clone https://github.com/vubahung222/portfolio-DTC245180186.git
-cd portfolio-DTC245180186
+git clone https://github.com/vubahung222/Vu-Ba-Hung-DTC245180186-Website-Portfolio.git
+cd Vu-Ba-Hung-DTC245180186-Website-Portfolio
 ```
 
 ### 2. Tạo file `.env`
