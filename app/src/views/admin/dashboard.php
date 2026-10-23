@@ -56,18 +56,6 @@
     </a>
 </div>
 
-<!-- Quick actions -->
-<div class="form-panel">
-    <div class="form-panel-title">⚡ Thao tác nhanh</div>
-    <div style="display:grid; grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); gap: var(--space-3);">
-        <a href="/admin/profile"   class="btn btn-outline">👤 Cập nhật hồ sơ</a>
-        <a href="/admin/projects/create" class="btn btn-outline">➕ Thêm dự án</a>
-        <a href="/admin/skills"    class="btn btn-outline">⚡ Quản lý kỹ năng</a>
-        <a href="/admin/messages"  class="btn btn-outline">💬 Xem tin nhắn <?= $stats['unread'] > 0 ? "({$stats['unread']})" : '' ?></a>
-        <a href="/admin/education" class="btn btn-outline">🎓 Học vấn</a>
-        <a href="/admin/experiences" class="btn btn-outline">💼 Kinh nghiệm</a>
-    </div>
-</div>
 
 <!-- System info -->
 <div class="form-panel">
