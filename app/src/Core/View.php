@@ -1,5 +1,6 @@
 <?php
 declare(strict_types=1);
+
 namespace Core;
 
 class View
@@ -40,12 +41,3 @@ class View
         return htmlspecialchars((string)($value ?? ''), ENT_QUOTES | ENT_HTML5, 'UTF-8');
     }
 }
-
-// Helper toàn cục
-function e(mixed $v): string { return \Core\View::e($v); }
-function csrf_field(): string { return \Core\Csrf::field(); }
-function csrf_token(): string { return \Core\Csrf::token(); }
-function flash(string $key, mixed $default = null): mixed { return \Core\Session::getFlash($key, $default); }
-function old(string $key, mixed $default = ''): mixed { return \Core\Session::getFlash("old_{$key}", $default); }
-function asset(string $path): string { return '/' . ltrim($path, '/'); }
-function uploads_url(string $path): string { return UPLOADS_URL . '/' . ltrim($path, '/'); }
