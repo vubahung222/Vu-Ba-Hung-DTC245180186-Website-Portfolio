@@ -12,11 +12,11 @@ if (!empty($profile['full_name'])) {
     </div>
 </div>
 
-<?php if ($success = \Core\Session::getFlash('success')): ?>
-<div class="alert alert-success"><?= e($success) ?></div>
+<?php $s = $success ?? \Core\Session::getFlash('success'); if (!empty($s)): ?>
+<div class="alert alert-success"><?= e($s) ?></div>
 <?php endif; ?>
-<?php if ($error = \Core\Session::getFlash('error')): ?>
-<div class="alert alert-error"><?= e($error) ?></div>
+<?php $err = $error ?? \Core\Session::getFlash('error'); if (!empty($err)): ?>
+<div class="alert alert-error"><?= e($err) ?></div>
 <?php endif; ?>
 
 <!-- Avatar Upload -->

@@ -38,11 +38,12 @@ desktop.ini
 *.swp
 *.swo
 
-# Logs cục bộ
-*.log
-logs/
-
 # Backup
 *.sql.bak
 *.sql.gz
 backups/
+*.sql
+
+# Python cache
+__pycache__/
+*.pyc

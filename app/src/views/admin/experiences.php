@@ -5,8 +5,8 @@
     </div>
 </div>
 
-<?php if ($s = \Core\Session::getFlash('success')): ?><div class="alert alert-success"><?= e($s) ?></div><?php endif; ?>
-<?php if ($err = \Core\Session::getFlash('error')): ?><div class="alert alert-error"><?= e($err) ?></div><?php endif; ?>
+<?php $msgSuccess = $success ?? \Core\Session::getFlash('success'); if (!empty($msgSuccess)): ?><div class="alert alert-success"><?= e($msgSuccess) ?></div><?php endif; ?>
+<?php $msgError = $error ?? \Core\Session::getFlash('error'); if (!empty($msgError)): ?><div class="alert alert-error"><?= e($msgError) ?></div><?php endif; ?>
 
 <div class="form-panel">
     <div class="form-panel-title">➕ Thêm kinh nghiệm</div>

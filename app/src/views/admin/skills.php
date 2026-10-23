@@ -5,8 +5,8 @@
     </div>
 </div>
 
-<?php if ($s = \Core\Session::getFlash('success')): ?><div class="alert alert-success"><?= e($s) ?></div><?php endif; ?>
-<?php if ($e = \Core\Session::getFlash('error')): ?><div class="alert alert-error"><?= e($e) ?></div><?php endif; ?>
+<?php $msgSuccess = $success ?? \Core\Session::getFlash('success'); if (!empty($msgSuccess)): ?><div class="alert alert-success"><?= e($msgSuccess) ?></div><?php endif; ?>
+<?php $msgError = $error ?? \Core\Session::getFlash('error'); if (!empty($msgError)): ?><div class="alert alert-error"><?= e($msgError) ?></div><?php endif; ?>
 
 <!-- Add Skill Form -->
 <div class="form-panel">
