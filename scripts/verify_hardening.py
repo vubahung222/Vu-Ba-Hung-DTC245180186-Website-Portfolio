@@ -175,14 +175,16 @@ print()
 
 # ── 8. Mật khẩu Hash ────────────────────────────────────
 print("8. PASSWORD HASHING (bcrypt)")
-code, out, _ = run_docker(
+code, out, err = run_docker(
     "docker exec portfolio_mysql mysql -uportfolio_user -pAppPass@2025! portfolio_db "
-    "-e \"SELECT SUBSTRING(password, 1, 7) as hash_prefix FROM admin_users LIMIT 1;\" "
-    "--skip-column-names 2>/dev/null"
+    "-e \"SELECT SUBSTRING(password_hash, 1, 7) as hash_prefix FROM admin_users LIMIT 1;\" "
+    "--skip-column-names"
 )
-is_bcrypt = "$2y$12" in out or "$2y$" in out
+full_text = f"{out} {err}"
+is_bcrypt = "$2y$12" in full_text or "$2y$" in full_text
+match_val = "$2y$12$" if "$2y$12$" in full_text else ("$2y$" if "$2y$" in full_text else out[:20])
 check("Admin password dùng bcrypt ($2y$)", is_bcrypt,
-      f"Prefix: {out[:20]}" if out else "Không query được DB")
+      f"Prefix: {match_val}" if is_bcrypt else "Không query được DB")
 print()
 
 # ── Kết quả tổng hợp ─────────────────────────────────────
