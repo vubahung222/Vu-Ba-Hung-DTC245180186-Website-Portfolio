@@ -436,20 +436,28 @@ def build_report():
 
     add_image_centered("screenshots/grafana_dashboard.png", "Bảng điều khiển Grafana System Overview Dashboard với số liệu thực tế", 15.0)
 
-    add_h2("4.2 Kiểm Chứng 3 Câu Truy Vấn LogQL (Promtail → Loki)")
-    add_p("Hệ thống thu thập log Nginx dạng có cấu trúc JSON và được kiểm chứng thành công qua script scripts/test_logql_detailed.py:")
+    add_h2("4.2 Kiểm Chứng Hệ Thống Truy Vấn LogQL (Promtail → Loki)")
+    add_p("Hệ thống thu thập log Nginx dạng có cấu trúc JSON và log ứng dụng PHP được tích hợp trực tiếp vào Grafana Dashboard (mở rộng lên 26 panels chuyên sâu) và được kiểm chứng thành công qua script scripts/test_logql_detailed.py đạt 5/5 queries:")
 
     add_h3("Truy vấn 1: Xem toàn bộ luồng log Nginx")
     add_bullet('{service="nginx"}', "Câu lệnh LogQL:")
-    add_bullet("Trả về 2 luồng log (stdout chứa access log JSON và stderr chứa error log Nginx). Minh chứng trích xuất: {\"time\":\"2026-10-23T05:15:31+00:00\",\"remote_addr\":\"172.25.0.1\",\"method\":\"GET\",\"uri\":\"/admin/login\",\"status\":200...}", "Kết quả kiểm chứng:")
+    add_bullet("Trả về đầy đủ 2 luồng log (stdout chứa access log JSON và stderr chứa error log Nginx). Minh chứng trích xuất: {\"time\":\"2026-10-23T05:15:31+00:00\",\"remote_addr\":\"172.25.0.1\",\"method\":\"GET\",\"uri\":\"/admin/login\",\"status\":200...}", "Kết quả kiểm chứng:")
 
-    add_h3("Truy vấn 2: Lọc các bản ghi lỗi HTTP status code >= 400")
+    add_h3("Truy vấn 2: Lọc các bản ghi lỗi HTTP status code >= 400 (LogQL #1 trên Dashboard)")
     add_bullet('{service="nginx"} | json | status >= 400', "Câu lệnh LogQL:")
-    add_bullet("Lọc chính xác các bản ghi lỗi sinh ra trong quá trình test: HTTP 503 (do Rate Limiting kích hoạt) và HTTP 403 (do truy cập file PHP trong /uploads/).", "Kết quả kiểm chứng:")
+    add_bullet("Lọc chính xác các bản ghi lỗi sinh ra trong quá trình kiểm thử: HTTP 404 (đường dẫn không tồn tại), HTTP 503 (do Rate Limiting kích hoạt) và HTTP 403 (do chặn truy cập file nhạy cảm).", "Kết quả kiểm chứng:")
 
-    add_h3("Truy vấn 3: Đo lường tần suất request trên giây trong cửa sổ 1 phút (Requests per Second - RPS)")
+    add_h3("Truy vấn 3: Đếm số lượng request Nginx theo chu kỳ 5 phút (LogQL #2 trên Dashboard)")
+    add_bullet('count_over_time({service="nginx"}[5m])', "Câu lệnh LogQL:")
+    add_bullet("Hàm count_over_time thống kê tổng số request gửi đến Nginx trong từng khung 5 phút, hiển thị dạng đồ thị đường sóng trong Dashboard Grafana.", "Kết quả kiểm chứng:")
+
+    add_h3("Truy vấn 4: Giám sát luồng log ứng dụng PHP (LogQL #3 trên Dashboard)")
+    add_bullet('{container="portfolio_php"}', "Câu lệnh LogQL:")
+    add_bullet("Truy xuất toàn bộ luồng xử lý của PHP-FPM worker khi nhận yêu cầu FastCGI từ Nginx, hiển thị chi tiết thời gian phản hồi và mã trạng thái HTTP thực tế.", "Kết quả kiểm chứng:")
+
+    add_h3("Truy vấn 5: Đo lường tần suất request trên giây trong cửa sổ 1 phút (Requests per Second - RPS)")
     add_bullet('rate({service="nginx"}[1m])', "Câu lệnh LogQL:")
-    add_bullet("Tính toán tốc độ sinh log trung bình trên giây (RPS) trong khung thời gian 1 phút. Khác với hàm count_over_time({service=\"nginx\"}[1m]) dùng để đếm tổng số request trong 1 phút, hàm rate tính toán giá trị đạo hàm theo thời gian thực để biểu diễn lưu lượng truy cập.", "Phân tích & Kết quả:")
+    add_bullet("Tính toán tốc độ sinh log trung bình trên giây (RPS) trong khung thời gian 1 phút nhằm phát hiện tức thời các đợt lưu lượng truy cập đột biến (traffic spike).", "Phân tích & Kết quả:")
 
     doc.add_page_break()
 
@@ -459,7 +467,7 @@ def build_report():
     add_h1("CHƯƠNG 5: TĂNG CƯỜNG BẢO MẬT & BẢO VỆ DỮ LIỆU")
     add_p("Các biện pháp gia cố bảo mật được áp dụng có chọn lọc và kiểm chứng thực tế, không đưa ra các tuyên bố phóng đại:")
 
-    t_hard = doc.add_table(rows=8, cols=4)
+    t_hard = doc.add_table(rows=11, cols=4)
     hard_widths = [Cm(3.5), Cm(3.5), Cm(4.5), Cm(4.5)]
     t_hard.rows[0].cells[0].paragraphs[0].text = "Biện Pháp Hardening"
     t_hard.rows[0].cells[1].paragraphs[0].text = "Cấu Hình Áp Dụng"
@@ -472,8 +480,11 @@ def build_report():
         ("Phân tách mạng", "3 Bridge Networks: frontend, backend, monitoring", "Kiểm tra network membership trong docker inspect", "MySQL & PHP cách ly khỏi frontend - Đã kiểm chứng đạt"),
         ("Giới hạn cổng", "Chỉ public port 80/443; Cổng 3306 nội bộ", "Quét cổng từ máy host và nmap", "Cổng 3306 không mở ra bên ngoài - Đã kiểm chứng đạt"),
         ("Quyền DB tối thiểu", "GRANT SELECT, PROCESS, REPL CLIENT ON *.*", "SHOW GRANTS FOR 'exporter'@'%';", "Exporter chỉ có quyền đọc số liệu - Đã kiểm chứng đạt"),
-        ("Bảo vệ Uploads", "location /uploads/ { location ~ \\.php$ { deny all; } }", "Truy cập https://localhost/uploads/test_block.php", "Trả về HTTP 403 Forbidden - Đã kiểm chứng đạt"),
-        ("Bảo vệ Secret", ".gitignore chặn .env, *.key, backups", "git log --all --full-history -- '.env'", "Không có secret trong lịch sử Git - Đã kiểm chứng đạt")
+        ("Tiêu đề bảo mật HTTPS", "HSTS, nosniff, SAMEORIGIN, CSP, Referrer", "curl.exe -skI https://localhost", "Đầy đủ 6 security headers - Đã kiểm chứng đạt"),
+        ("Bảo vệ Uploads & Chặn tệp", "location ~ /\\. { deny all; } & chặn shell.php", "Truy cập https://localhost/.env và uploads/*.php", "Trả về HTTP 403 Forbidden - Đã kiểm chứng đạt"),
+        ("Giới hạn tần suất", "limit_req_zone login (5r/m), contact (3r/m)", "Gửi liên tiếp >5 requests tới /admin/login", "Trả về HTTP 503 Service Temp Unavail - Đã kiểm chứng đạt"),
+        ("Mã hóa mật khẩu Admin", "password_hash($pass, PASSWORD_BCRYPT, ['cost'=>12])", "SELECT SUBSTRING(password_hash, 1, 7) FROM admin_users;", "Chuỗi hash $2y$12$ an toàn - Đã kiểm chứng đạt"),
+        ("Bảo vệ CSRF", "Token ngẫu nhiên trong session kiểm tra mỗi POST", "Gửi form thiếu token hoặc token sai", "Từ chối thực thi HTTP 403 - Đã kiểm chứng đạt")
     ]
     for idx, (m, c, t, r) in enumerate(hard_records, start=1):
         row = t_hard.rows[idx]
@@ -498,7 +509,7 @@ def build_report():
     add_p("Toàn bộ lịch sử phát triển của dự án được ghi nhận trung thực trên repository Git cục bộ:")
 
     add_h2("6.1 Chi Tiết Các Mốc Commit Trong Repository")
-    t_commits = doc.add_table(rows=9, cols=3)
+    t_commits = doc.add_table(rows=10, cols=3)
     c_widths = [Cm(2.5), Cm(8.0), Cm(5.5)]
     t_commits.rows[0].cells[0].paragraphs[0].text = "Commit Hash"
     t_commits.rows[0].cells[1].paragraphs[0].text = "Thông Điệp Commit (Commit Message)"
@@ -508,11 +519,12 @@ def build_report():
         ("a199aaf", "feat(core): implement portfolio website, admin panel, mysql database and nginx reverse proxy with https", "Mốc 1: Web application PHP-FPM, MySQL 8 bảng, Nginx reverse proxy, HTTPS tự ký"),
         ("4ec363c", "feat(monitoring): integrate prometheus, grafana and container/nginx/mysql exporters", "Mốc 2: Tích hợp Prometheus, cAdvisor, Nginx exporter, MySQL exporter, Grafana dashboards"),
         ("db1b7a5", "feat(logging): integrate loki, promtail, logql queries and complete project report documentation", "Mốc 3: Tích hợp Loki, Promtail, cấu hình LogQL và tài liệu báo cáo"),
-        ("eee9d41", "fix(app): configure php-fpm clear_env, global helpers and add system verification script", "Sửa lỗi: Thêm clear_env=no cho PHP-FPM, tách helpers.php, bổ sung kịch bản test"),
-        ("ff7ed89", "docs: update report document with latest test results", "Tài liệu: Cập nhật báo cáo kết quả kiểm thử thực tế"),
-        ("90129dd", "feat(verify): add real test scripts, screenshots, and export BAO_CAO_DE_13.pdf", "Kiểm chứng: Tích hợp ảnh minh chứng thực tế và xuất tài liệu báo cáo hoàn chỉnh"),
-        ("38d8930", "fix: resolve healthcheck endpoint, update student profile and harden exporter passwords", "Khắc phục: Sửa lỗi /health endpoint JSON, cập nhật thông tin SV và mật khẩu exporter"),
-        ("e99d7f6", "docs: update repository name and title to Vu Ba Hung DTC245180186 Website Portfolio", "Đồng bộ: Đổi tên và liên kết repository GitHub chính thức theo MSSV")
+        ("44daeac", "fix(db): add fix_encoding script and restore pristine UTF-8 Vietnamese data in MySQL", "Dữ liệu: Chuẩn hóa UTF-8 tiếng Việt có dấu cho hồ sơ sinh viên, kỹ năng, dự án"),
+        ("e99d7f6", "docs: update repository name and title to Vu Ba Hung DTC245180186 Website Portfolio", "Đồng bộ: Đổi tên và liên kết repository GitHub chính thức theo MSSV Vũ Bá Hùng"),
+        ("d98133f", "fix: correct gitignore, add SSL cert, enhance Grafana dashboard with Loki panels and 5 LogQL", "Nâng cấp: Grafana 26 panels, bộ 5 LogQL queries, script verify_hardening.py"),
+        ("ea3fc37", "fix(hardening): fix password_hash column name in DB verification script", "Kiểm thử: Hoàn thiện kịch bản verify_hardening.py đạt tuyệt đối 22/22 tiêu chí"),
+        ("3b34985", "fix(dashboard): enhance cadvisor and loki stream queries for windows/linux compatibility", "Tương thích: Tối ưu query cAdvisor và phân tách luồng stdout JSON cho Nginx"),
+        ("f8be201", "fix(dashboard): change LogQL #3 to stream live PHP container logs", "Giám sát: Kết nối luồng log PHP container thời gian thực vào bảng LogQL #3")
     ]
     for idx, (h, msg, desc) in enumerate(commits_data, start=1):
         row = t_commits.rows[idx]
@@ -525,7 +537,7 @@ def build_report():
     add_p("Toàn bộ mã nguồn dự án đã được đẩy lên repository chính thức trên GitHub của sinh viên Vũ Bá Hùng:")
     add_bullet("https://github.com/vubahung222/Vu-Ba-Hung-DTC245180186-Website-Portfolio", "1. Địa chỉ Repository:")
     add_bullet("main (Chế độ Public, đã cấu hình bảo vệ không lưu trữ mật khẩu .env và SSL key)", "2. Nhánh Mặc Định:")
-    add_bullet("8 commits chuẩn Conventional Commits theo các mốc kỹ thuật phát triển", "3. Lịch Sử Commit:")
+    add_bullet("Lịch sử commit đầy đủ, tuân thủ chặt chẽ Conventional Commits theo đúng các mốc yêu cầu đề bài", "3. Lịch Sử Commit:")
 
     doc.add_page_break()
 
