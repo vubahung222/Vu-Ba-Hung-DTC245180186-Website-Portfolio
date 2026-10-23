@@ -239,11 +239,11 @@ def build_report():
             r_cap.font.color.rgb = RGBColor(75, 85, 99)
 
     # ═════════════════════════════════════════════════════════════════
-    # TRANG BÌA CHUẨN HỌC THUẬT
+    # TRANG BÌA CHUẨN HỌC THUẬT ICTU
     # ═════════════════════════════════════════════════════════════════
     p = doc.add_paragraph()
     p.alignment = WD_ALIGN_PARAGRAPH.CENTER
-    r = p.add_run("[TRƯỜNG/KHOA] (*)\nKHOA CÔNG NGHỆ THÔNG TIN\n")
+    r = p.add_run("ĐẠI HỌC THÁI NGUYÊN\nTRƯỜNG ĐẠI HỌC CÔNG NGHỆ THÔNG TIN VÀ TRUYỀN THÔNG\n")
     r.font.name = 'Times New Roman'
     r.bold = True
     r.font.size = Pt(13)
@@ -286,10 +286,10 @@ def build_report():
     t_info.rows[0].cells[1].width = Cm(9.5)
     
     info_data = [
-        ("Giảng viên hướng dẫn (*):", "[GIẢNG VIÊN]"),
-        ("Sinh viên thực hiện (*):", "[HỌ TÊN]"),
-        ("Mã số sinh viên (MSSV) (*):", "[MSSV]"),
-        ("Lớp chuyên ngành (*):", "[LỚP]"),
+        ("Giảng viên hướng dẫn:", "Hoàng Văn Tâm"),
+        ("Sinh viên thực hiện:", "Vũ Bá Hùng"),
+        ("Mã số sinh viên (MSSV):", "DTC245180186"),
+        ("Lớp chuyên ngành:", "KTPM K23C"),
         ("Học kỳ / Năm học:", "Năm học 2025 - 2026")
     ]
     for row_idx, (k, v) in enumerate(info_data):
@@ -309,19 +309,10 @@ def build_report():
         r1.bold = True
         r1.font.color.rgb = RGBColor(37, 99, 235)
 
-    p_note = doc.add_paragraph()
-    p_note.alignment = WD_ALIGN_PARAGRAPH.CENTER
-    p_note.paragraph_format.space_before = Pt(20)
-    r_note = p_note.add_run("(*) GHI CHÚ: Các trường trong dấu ngoặc vuông [...] là thông tin sinh viên cần điền chính xác trước khi nộp.")
-    r_note.font.name = 'Times New Roman'
-    r_note.font.size = Pt(10)
-    r_note.font.italic = True
-    r_note.font.color.rgb = RGBColor(185, 28, 28)
-
     p_bottom = doc.add_paragraph()
     p_bottom.alignment = WD_ALIGN_PARAGRAPH.CENTER
-    p_bottom.paragraph_format.space_before = Pt(40)
-    r_b = p_bottom.add_run("Thành phố Hồ Chí Minh, Năm 2026")
+    p_bottom.paragraph_format.space_before = Pt(50)
+    r_b = p_bottom.add_run("Thái Nguyên, Năm 2026")
     r_b.font.name = 'Times New Roman'
     r_b.font.italic = True
     r_b.font.size = Pt(12)
@@ -507,7 +498,7 @@ def build_report():
     add_p("Toàn bộ lịch sử phát triển của dự án được ghi nhận trung thực trên repository Git cục bộ:")
 
     add_h2("6.1 Chi Tiết Các Mốc Commit Trong Repository")
-    t_commits = doc.add_table(rows=6, cols=3)
+    t_commits = doc.add_table(rows=9, cols=3)
     c_widths = [Cm(2.5), Cm(8.0), Cm(5.5)]
     t_commits.rows[0].cells[0].paragraphs[0].text = "Commit Hash"
     t_commits.rows[0].cells[1].paragraphs[0].text = "Thông Điệp Commit (Commit Message)"
@@ -518,7 +509,10 @@ def build_report():
         ("4ec363c", "feat(monitoring): integrate prometheus, grafana and container/nginx/mysql exporters", "Mốc 2: Tích hợp Prometheus, cAdvisor, Nginx exporter, MySQL exporter, Grafana dashboards"),
         ("db1b7a5", "feat(logging): integrate loki, promtail, logql queries and complete project report documentation", "Mốc 3: Tích hợp Loki, Promtail, cấu hình LogQL và tài liệu báo cáo"),
         ("eee9d41", "fix(app): configure php-fpm clear_env, global helpers and add system verification script", "Sửa lỗi: Thêm clear_env=no cho PHP-FPM, tách helpers.php, bổ sung kịch bản test"),
-        ("ff7ed89", "docs: update report document with latest test results", "Tài liệu: Cập nhật báo cáo kết quả kiểm thử thực tế")
+        ("ff7ed89", "docs: update report document with latest test results", "Tài liệu: Cập nhật báo cáo kết quả kiểm thử thực tế"),
+        ("90129dd", "feat(verify): add real test scripts, screenshots, and export BAO_CAO_DE_13.pdf", "Kiểm chứng: Tích hợp ảnh minh chứng thực tế và xuất tài liệu báo cáo hoàn chỉnh"),
+        ("38d8930", "fix: resolve healthcheck endpoint, update student profile and harden exporter passwords", "Khắc phục: Sửa lỗi /health endpoint JSON, cập nhật thông tin SV và mật khẩu exporter"),
+        ("e99d7f6", "docs: update repository name and title to Vu Ba Hung DTC245180186 Website Portfolio", "Đồng bộ: Đổi tên và liên kết repository GitHub chính thức theo MSSV")
     ]
     for idx, (h, msg, desc) in enumerate(commits_data, start=1):
         row = t_commits.rows[idx]
@@ -527,11 +521,11 @@ def build_report():
         row.cells[2].paragraphs[0].text = desc
     style_table_navy(t_commits, c_widths)
 
-    add_h2("6.2 Trạng Thái Remote & Hướng Dẫn Push Lên GitHub")
-    add_p("Hiện trạng repository cục bộ đã được commit đầy đủ. Cấu hình git remote -v hiện tại chưa được gán do cần sinh viên tạo repository trên tài khoản GitHub cá nhân (theo quy định đặt tên repo theo MSSV).")
-    add_bullet("Bước 1: Tạo một repository rỗng trên GitHub cá nhân (Ví dụ: https://github.com/[MSSV]/portfolio-de13).", "Hướng dẫn sinh viên đẩy code:")
-    add_bullet("Bước 2: Chạy lệnh liên kết remote: git remote add origin https://github.com/[MSSV]/portfolio-de13.git", "Hướng dẫn sinh viên đẩy code:")
-    add_bullet("Bước 3: Đẩy toàn bộ nhánh main lên GitHub: git push -u origin main", "Hướng dẫn sinh viên đẩy code:")
+    add_h2("6.2 Trạng Thái Remote & Liên Kết GitHub Chính Thức")
+    add_p("Toàn bộ mã nguồn dự án đã được đẩy lên repository chính thức trên GitHub của sinh viên Vũ Bá Hùng:")
+    add_bullet("https://github.com/vubahung222/Vu-Ba-Hung-DTC245180186-Website-Portfolio", "1. Địa chỉ Repository:")
+    add_bullet("main (Chế độ Public, đã cấu hình bảo vệ không lưu trữ mật khẩu .env và SSL key)", "2. Nhánh Mặc Định:")
+    add_bullet("8 commits chuẩn Conventional Commits theo các mốc kỹ thuật phát triển", "3. Lịch Sử Commit:")
 
     doc.add_page_break()
 
@@ -557,7 +551,7 @@ def build_report():
         ("Prometheus & Metrics 3 nhóm", "docker-compose.yml, monitoring/prometheus/", "curl http://localhost:9090/api/v1/targets", "5/5 targets UP; mysql_up=1; requests_total=190", "Prometheus API output", "Đã kiểm chứng đạt"),
         ("Loki & 3 Truy Vấn LogQL", "monitoring/loki/, monitoring/promtail/", "Chạy python scripts/test_logql_detailed.py", "Thu thập Nginx JSON; lọc lỗi HTTP>=400; đo RPS 1m", "LogQL terminal output", "Đã kiểm chứng đạt"),
         ("Hardening Bảo Mật", "app/Dockerfile, docker-compose.yml", "docker compose exec php whoami, test upload shell.php", "Non-root appuser; từ chối file không hợp lệ; no-new-privileges", "Bảng Chương 5", "Đã kiểm chứng đạt"),
-        ("Quản Lý Git & 3 Mốc Commit", ".git/, README.md, .gitignore", "git log --oneline & git status", "5 commits chuẩn; .env không bị commit; working tree clean", "Bảng Chương 6", "Đã kiểm chứng đạt (*)")
+        ("Quản Lý Git & 3 Mốc Commit", ".git/, README.md, .gitignore", "git log --oneline & git remote -v", "8 commits chuẩn; đã push GitHub chính thức; working tree clean", "Bảng Chương 6", "Đã kiểm chứng đạt")
     ]
     for idx, (req, f, act, res, proof, st) in enumerate(handoff_data, start=1):
         row = t_handoff.rows[idx]
@@ -569,7 +563,7 @@ def build_report():
         row.cells[5].paragraphs[0].text = st
     style_table_navy(t_handoff, h_widths)
 
-    add_p("(*) Trạng thái Git: Đã kiểm chứng đạt trên repository cục bộ. Trạng thái Remote GitHub: Chưa kiểm chứng (Đang chờ sinh viên tạo repo và push).")
+    add_p("(*) Trạng thái Git & GitHub: Đã kiểm chứng đạt 100% trên cả repository cục bộ và GitHub remote chính thức.")
 
     add_h2("7.1 Bảng Đối Chiếu Số Điểm Chuẩn Theo Rubric Đề Bài")
     add_p("Bảng điểm tuân thủ đúng số điểm đề ra (Mục Tổng thể & Trình bày là 1,0 điểm, tổng điểm đề ra là 9,5 điểm):")
@@ -583,7 +577,7 @@ def build_report():
     t_rubric.rows[0].cells[4].paragraphs[0].text = "Trạng Thái Đánh Giá"
     
     rubric_records = [
-        ("1", "GitHub, README & 3 Mốc Commit", "1.5 đ", "Đủ 3 mốc commit thực chất + 2 commit sửa lỗi; README chi tiết; .gitignore bảo vệ secrets", "Đã kiểm chứng đạt (Repo local)"),
+        ("1", "GitHub, README & 3 Mốc Commit", "1.5 đ", "Đủ 3 mốc commit thực chất + 5 commit hoàn thiện; đã push GitHub; README chi tiết; .gitignore bảo vệ secrets", "Đã kiểm chứng đạt"),
         ("2", "Website Portfolio, CSDL & phpMyAdmin", "1.5 đ", "Nền trắng #FFFFFF; 100% tiếng Việt UTF-8; CSDL 8 bảng 3NF; Full CRUD; phpMyAdmin 8080", "Đã kiểm chứng đạt"),
         ("3", "Nginx Gateway & Reverse Proxy", "1.5 đ", "Ingress duy nhất; FastCGI chuẩn tới PHP-FPM; TLS HTTPS; Rate limit 5r/m; Security headers", "Đã kiểm chứng đạt"),
         ("4", "Prometheus, Grafana & Metrics", "1.5 đ", "Đủ 3 nhóm: Container, Nginx, MySQL; 5/5 targets UP; Grafana dashboard provisioned tự động", "Đã kiểm chứng đạt"),
