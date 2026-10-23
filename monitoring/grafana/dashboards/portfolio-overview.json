@@ -587,12 +587,12 @@
       },
       "targets": [
         {
-          "expr": "{container=\"portfolio_php\"} |= \"ERROR\" | line_format \"{{.stream}}: {{.line}}\"",
-          "legendFormat": "PHP Errors",
+          "expr": "{container=\"portfolio_php\"}",
+          "legendFormat": "PHP Logs",
           "refId": "A"
         }
       ],
-      "title": "LogQL #3: PHP Container ERROR filter",
+      "title": "LogQL #3: PHP Application Container Logs",
       "type": "logs"
     }
   ],
