@@ -1,0 +1,48 @@
+# Git ignore
+.env
+*.env.local
+
+# Upload files
+app/uploads/avatars/*.jpg
+app/uploads/avatars/*.jpeg
+app/uploads/avatars/*.png
+app/uploads/avatars/*.gif
+app/uploads/avatars/*.webp
+!app/uploads/avatars/.gitkeep
+
+# SSL certs (private keys)
+nginx/ssl/*.key
+nginx/ssl/*.pem
+nginx/ssl/*.crt
+
+# Docker volumes
+mysql-data/
+grafana-data/
+prometheus-data/
+loki-data/
+
+# Node modules (nếu có)
+node_modules/
+
+# PHP cache
+app/src/cache/
+
+# OS files
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# Logs cục bộ
+*.log
+logs/
+
+# Backup
+*.sql.bak
+*.sql.gz
+backups/

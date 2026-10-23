@@ -1,0 +1,17 @@
+# Docker ignore
+.git
+.gitignore
+README.md
+*.md
+.env
+*.env.local
+nginx/ssl/*.key
+nginx/ssl/*.pem
+node_modules
+.DS_Store
+Thumbs.db
+backups/
+*.sql.bak
+monitoring/grafana/data/
+monitoring/prometheus/data/
+monitoring/loki/data/
