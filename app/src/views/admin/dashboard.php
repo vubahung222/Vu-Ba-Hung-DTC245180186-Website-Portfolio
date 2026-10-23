@@ -10,50 +10,50 @@
 <div class="alert alert-success" role="alert"><?= e($notice) ?></div>
 <?php endif; ?>
 
-<!-- Stats -->
+<!-- Stats (Clickable) -->
 <div class="stats-grid">
-    <div class="stat-card">
+    <a href="/admin/projects" class="stat-card" title="Xem danh sách dự án">
         <div class="stat-icon">🚀</div>
         <div>
             <div class="stat-value"><?= $stats['projects'] ?></div>
             <div class="stat-label">Dự án</div>
         </div>
-    </div>
-    <div class="stat-card">
+    </a>
+    <a href="/admin/skills" class="stat-card" title="Quản lý kỹ năng">
         <div class="stat-icon">⚡</div>
         <div>
             <div class="stat-value"><?= $stats['skills'] ?></div>
             <div class="stat-label">Kỹ năng</div>
         </div>
-    </div>
-    <div class="stat-card">
+    </a>
+    <a href="/admin/education" class="stat-card" title="Quản lý học vấn">
         <div class="stat-icon">🎓</div>
         <div>
             <div class="stat-value"><?= $stats['education'] ?></div>
             <div class="stat-label">Học vấn</div>
         </div>
-    </div>
-    <div class="stat-card">
+    </a>
+    <a href="/admin/experiences" class="stat-card" title="Quản lý kinh nghiệm">
         <div class="stat-icon">💼</div>
         <div>
             <div class="stat-value"><?= $stats['experiences'] ?></div>
             <div class="stat-label">Kinh nghiệm</div>
         </div>
-    </div>
-    <div class="stat-card">
+    </a>
+    <a href="/admin/messages" class="stat-card" title="Xem tin nhắn liên hệ">
         <div class="stat-icon <?= $stats['unread'] > 0 ? 'red' : 'green' ?>">💬</div>
         <div>
             <div class="stat-value"><?= $stats['messages'] ?></div>
             <div class="stat-label">Tin nhắn <?php if ($stats['unread'] > 0): ?><span class="sidebar-badge"><?= $stats['unread'] ?> chưa đọc</span><?php endif; ?></div>
         </div>
-    </div>
-    <div class="stat-card">
+    </a>
+    <a href="/health" target="_blank" class="stat-card" title="Kiểm tra trạng thái hệ thống">
         <div class="stat-icon green">✅</div>
         <div>
             <div class="stat-value" style="font-size:1.25rem; color:var(--color-success)">Online</div>
             <div class="stat-label">Hệ thống</div>
         </div>
-    </div>
+    </a>
 </div>
 
 <!-- Quick actions -->
